@@ -1,0 +1,10 @@
+{
+  "name": "EV3Web-Client",
+  "version": "0.1.0",
+  "description": "A simple web front-end to communicate with leJOS EV3",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  }
+}

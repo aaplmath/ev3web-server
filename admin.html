@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EV3 ISP Admin</title>
+        <style>
+            body {
+                font-family: "Avenir Next", Avenir, HelveticaNeue, Helvetica, sans-serif;
+                display: none;
+                width: calc(100% - 10vw);
+                border: 1px solid black;
+                padding: 1em;
+            }
+            #emerg-stop {
+                background-color: red;
+            }
+            #emerg-stop:active {
+                background-color: black;
+            }
+            #kick-client {
+                background-color: lightcoral;
+            }
+            .delete-button {
+                background-color: mediumvioletred;
+            }
+            .accept {
+                background-color: lightgreen;
+            }
+            #submit-event, input {
+                background-color: lightyellow;
+            }
+            table, td, th {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Admin Console</h1>
+        <hr>
+        <button id="emerg-stop">EMERGENCY STOP</button>
+        <hr>
+        <p>Current Client: <span id="current-client"></span></p>
+        <button id="kick-client">Kick Current Client</button>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Accept</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody id="queue-list">
+            </tbody>
+        </table>
+        <hr>
+        <form id="event-form">
+            <fieldset>
+                <legend>Emit socket event:</legend>
+                <input id="event-name">
+                <input id="event-message">
+                <button type="submit" id="submit-event">Emit</button>
+            </fieldset>
+        </form>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var pass = prompt("Please enter the admin password:");
+            var socket = io();
+            
+            function $(el) {
+                return document.querySelector(el);
+            }
+            
+            // Socket listening and initial setup
+            
+            socket.emit('admin-auth', {'pass': pass});
+            socket.on('admin-res', function(data) {
+                if (data.status === 'ok') {
+                    document.body.style.display = 'block';
+                    document.getElementById('current-client').textContent = data.active;
+                    for (var i = 0; i < data.queue.length; i++) {
+                        addToQueue(data.queue[i]);
+                    }
+                } else {
+                    alert('Incorrect password. Reload the page to try again.');
+                }
+            });
+            socket.on('queue-entrant', function(data) {
+                addToQueue(data);
+            });
+            socket.on('refresh-queue', function(data) {
+                $('#queue-list').innerHTML = '';
+                for (var i = 0; i < data.queue.length; i++) {
+                    addToQueue(data.queue[i]);
+                }
+            });
+            socket.on('clear-active', function() {
+                $('#current-client').textContent = '';
+            })
+            
+            // Client-side modifications
+            
+            $('#emerg-stop').addEventListener('click', function(e) {
+                e.preventDefault();
+                socket.emit('emergency-stop', '');
+            }, false);
+            $('#kick-client').addEventListener('click', function(e) {
+                e.preventDefault();
+                socket.emit('remove-user', '');
+                $('#current-client').textContent = '';
+            }, false);
+            $('#event-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                socket.emit($('#event-name').value, $('#event-message').value);
+            }, false)
+            
+            function addToQueue(username) {
+                var tr = document.createElement('tr');
+                var name = document.createElement('td');
+                name.textContent = username;
+                tr.appendChild(name);
+                var acceptTd = document.createElement('td');
+                var acceptButton = document.createElement('button');
+                acceptButton.classList.add('accept');
+                acceptButton.setAttribute('id', username);
+                acceptButton.textContent = 'Accept';
+                acceptButton.addEventListener('click', acceptUser, false);
+                acceptTd.appendChild(acceptButton);
+                var deleteTd = document.createElement('td');
+                var deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-button');
+                deleteButton.setAttribute('id', ':' + username);
+                deleteButton.textContent = 'Remove';
+                deleteButton.addEventListener('click', removeUser, false);
+                deleteTd.appendChild(deleteButton);
+                tr.appendChild(acceptTd);
+                tr.appendChild(deleteTd);
+                $('#queue-list').appendChild(tr);
+            }
+            function acceptUser(e) {
+                var name = e.target.getAttribute('id');
+                socket.emit('accept-user', name);
+                $('#queue-list').removeChild(e.target.parentElement.parentElement);
+                $('#current-client').textContent = name;
+            }
+            function removeUser(e) {
+                var id = e.target.getAttribute('id');
+                var name = id.substr(1, id.length - 1);
+                $('#queue-list').removeChild(e.target.parentElement.parentElement);
+                socket.emit('remove-user', name);
+            }
+        </script>
+    </body>
+</html>

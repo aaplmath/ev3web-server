@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+        <title>EV3 ISP Web</title>
+        <link rel="stylesheet" href="css/foundation.css">
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="small-12 columns">
+                <h1>EV3 Web Control Panel</h1>
+            </div>
+        </div>
+        <div class="row waiting">
+            <div class="small-12 columns" id="waiting-text">
+                <p>You have been placed in the queue to control the robot under the name <span id="waiting-name">&hellip;</span>.</p>
+            </div>
+        </div>
+        <div class="row control-panel medium-up-3">
+            <div class="control-view shrink columns">
+                <h1>Control</h1>
+                <div class="row align-center">
+                    <div class="small-4 columns">
+                        <button type="button" id="forward" class="large button control-button">&uarr;</button>
+                    </div>
+                </div>
+                <div class="row align-center">
+                    <div class="small-4 columns">
+                        <button type="button" id="left" class="large button control-button">&larr;</button>
+                    </div>
+                    <div class="small-4 columns">
+                        <button type="button" id="stop" class="large button alert control-button">&times;</button>
+                    </div>
+                    <div class="small-4 columns align-center">
+                        <button type="button" id="right" class="large button control-button">&rarr;</button>
+                    </div>
+                </div>
+                <div class="row align-center">
+                    <div class="small-4 columns">
+                        <button type="button" id="backward" class="large button control-button">&darr;</button>
+                    </div>
+                </div>
+                <div class="row align-center">
+                    <button type="button" id="raisearm" class="button control-button arm-button">Raise Arm</button>
+                    <button type="button" id="lowerarm" class="button control-button arm-button">Lower Arm</button>
+                </div>
+            </div>
+            <div class="control-view shrink columns">
+                <h1>Color Input</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Red</th>
+                            <th>Green</th>
+                            <th>Blue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="red">0.9</td>
+                            <td id="green">0.01</td>
+                            <td id="blue">0.0012</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="control-view shrink columns">
+                <h1>Log</h1>
+                <div class="callout" id="console">
+                    <p>[WEB-DEBUG] Console initiated</p>
+                </div>
+            </div>
+            <div class="control-view shrink columns">
+                <h1>Gyro Input</h1>
+                <p id="gyro">No data</p>
+            </div>
+            <div class="control-view shrink columns">
+                <h1>Infrared Input</h1>
+                <p id="infrared">No data</p>
+            </div>
+            <div class="control-view shrink columns">
+                <h1>Set Light Color</h1>
+                <select id="led-color-picker">
+                    <option>No Light</option>
+                    <option>Green Steady</option>
+                    <option>Red Steady</option>
+                    <option>Yellow Steady</option>
+                    <option>Green Blinking</option>
+                    <option>Red Blinking</option>
+                    <option>Yellow Blinking</option>
+                    <option>Green Rapid Blinking</option>
+                    <option>Red Rapid Blinking</option>
+                    <option>Yellow Rapid Blinking</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" id="copyright">
+            <div class="small-12 columns">
+                <p>Created by <a href="https://www.github.com/aaplmath">aaplmath</a>.</p>
+            </div>
+        </div>
+        <script src="js/vendor/jquery.js"></script>
+        <script src="js/vendor/what-input.js"></script>
+        <script src="js/vendor/foundation.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+
+</html>

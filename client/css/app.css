@@ -1,0 +1,35 @@
+.control-view {
+    border: 1px solid gray;
+    text-align: center;
+}
+#console {
+    background-color: black;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.75em;
+    text-align: left;
+    max-height: 25em;
+    max-width: 50em;
+    overflow: scroll;
+    border: none;
+    padding: none;
+    margin: 0px;
+}
+.control-panel {
+    /*display: none;*/
+    -webkit-filter: blur(7px);
+    filter: blur(7px)
+}
+.waiting {
+    border: 1px solid black;
+}
+#copyright {
+    text-align: center;
+}
+.arm-button {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+table {
+  text-align: left;
+}
