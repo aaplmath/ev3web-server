@@ -41,6 +41,9 @@ robot_nsp.on('connection', function(socket) {
   socket.on('infrared-sample', function(data) {
     io.emit('infrared-sample', data);
   });
+  socket.on('gyro-sample', function(data) {
+    io.emit('gyro-sample', data);
+  })
 });
 
 io.on('connection', function(socket) {
@@ -158,7 +161,7 @@ io.on('connection', function(socket) {
 
 // Listen on port
 
-server.listen(3000, function(){
+server.listen(80, function(){
   var addr = server.address();
   console.log('Server listening at', addr.address + ':' + addr.port);
 });
