@@ -39,6 +39,11 @@ socket.on('gyro-sample', function(data) {
 });
 socket.on('infrared-sample', function(data) {
   $('#infrared').text(data);
+  if (parseFloat(data) < 0.2) {
+    $('#infrared').css('color', 'red');
+  } else {
+    $('#infrared').css('color', 'black');
+  }
 });
 socket.on('color-sample', function(data) {
   $('#red').text(data[0]);
